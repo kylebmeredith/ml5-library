@@ -26,10 +26,10 @@ export class SpeechCommands {
       if (result.scores) {
         const classes = getTopKClassesFromArray(result.scores, topk, this.allLabels)
           .map(c => ({ label: c.className, confidence: c.probability }));
-        return cb(null, classes);
+        return cb(null, classes, result.spectrogram);
       }
       return cb(`ERROR: Cannot find scores in result: ${result}`);
-    }, this.options)
+    }, { includeSpectrogram: true }) // include spectrogram data
       .catch(err => {
         return cb(`ERROR: ${err.message}`);
       });
